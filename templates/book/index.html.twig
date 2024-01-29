@@ -13,5 +13,8 @@
     {% for book in data %}
         <li> {{ book.title }} </li>
     {% endfor %}
+    <div class="navigation">
+        {{ knp_pagination_render(data) }}
+    </div>
 </div>
 {% endblock %}

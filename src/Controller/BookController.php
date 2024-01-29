@@ -19,12 +19,20 @@ class BookController extends AbstractController
     }
 
     #[Route('/api/books', name: 'books')]
-    public function index(Request $request): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
+
+        //pagination example
         $repository = $this->em->getRepository(Book::class);
-        $query = $repository->findAll();
+        $query = $repository->createQueryBuilder('p')
+            ->getQuery();
+        $books = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            1 // it might be 9
+        );
         return $this->render('book/index.html.twig', [
-            'data' => $query,
+            'data' => $books,
             'controller_name' => 'BookController'
         ]);
     }
